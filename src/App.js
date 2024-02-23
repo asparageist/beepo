@@ -1,27 +1,19 @@
-import React, { useRef } from 'react';
-import {config} from 'dotenv';
+import React from 'react';
 import './App.css';
+import PlayAudio from './playAudio';
+import GetInput from './getInput';
 
 function App() {
-  const soundEffect = useRef(new Audio(process.env.PUBLIC_URL + '/hum.mp3'));
-
-  const playSound = () => {
-    soundEffect.current.play();
-  };
-
-  const stopSound = () => {
-    soundEffect.current.pause();
-    soundEffect.current.currentTime = 0;
-  };
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick={playSound}>PLAY</button>
-        <button onClick={stopSound}>STOP</button>
-      </header>
+    <>
+    <div id="cardContainer">
+      <PlayAudio/>
+      <GetInput/>
     </div>
+    </>
   );
 }
+
+
 
 export default App;
