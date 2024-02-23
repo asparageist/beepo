@@ -14,7 +14,7 @@ function PlayAudio() {
 
   return (
     <div>
-      <header className="App-header">
+      <header>
         <button onClick={playSound}>PLAY</button>
         <button onClick={stopSound}>STOP</button>
       </header>

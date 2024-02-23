@@ -6,7 +6,7 @@ import GetInput from './getInput';
 function App() {
   return (
     <>
-    <div id="cardContainer">
+    <div id='App-header'>
       <PlayAudio/>
       <GetInput/>
     </div>
