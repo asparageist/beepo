@@ -1,22 +1,23 @@
-import logo from './logo.svg';
+import React, { useRef } from 'react';
 import './App.css';
 
 function App() {
+  const soundEffect = useRef(new Audio(process.env.PUBLIC_URL + '/hum.mp3'));
+
+  const playSound = () => {
+    soundEffect.current.play();
+  };
+
+  const stopSound = () => {
+    soundEffect.current.pause();
+    soundEffect.current.currentTime = 0;
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={playSound}>PLAY</button>
+        <button onClick={stopSound}>STOP</button>
       </header>
     </div>
   );
