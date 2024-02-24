@@ -29,7 +29,7 @@ app.post('/api/generate', async (req, res) => {
     res.json({ response: response.choices[0].message.content });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred while generating text' });
+    res.status(500).json({ error: 'An error occurred while generating your text' });
   }
 });
 
