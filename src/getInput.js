@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import callChatGPT from './callGPT';
+import Dictaphone from './Dictaphone';
 
 
 function GetInput() {
@@ -9,6 +10,10 @@ function GetInput() {
   const handleChange = (event) => {
     setPrompt(event.target.value);
   };
+
+  const handleTranscriptChange = (transcript) => {
+    setPrompt(transcript);
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,6 +25,7 @@ function GetInput() {
     <div>
       <form onSubmit={handleSubmit}>
       <p>say what now</p>
+      <Dictaphone onTranscriptChange={handleTranscriptChange} />
         <input 
           type="text"
           value={prompt}

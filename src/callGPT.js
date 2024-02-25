@@ -15,6 +15,4 @@ async function callChatGPT(prompt) {
   }
 }
 
-
 export default callChatGPT;
-
