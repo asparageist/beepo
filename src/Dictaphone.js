@@ -30,7 +30,7 @@ const Dictaphone = ({onTranscriptChange}) => {
         onMouseDown={startListening}
         onTouchEnd={SpeechRecognition.stopListening}
         onMouseUp={SpeechRecognition.stopListening}
-      >Hold to talk</button>
+      >TALK NOW</button>
       <br />
       <p>{transcript}</p>
     </div>
