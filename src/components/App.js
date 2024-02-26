@@ -7,8 +7,8 @@ function App() {
   return (
     <>
     <div id='App-header'>
-      <PlayAudio/>
       <GetInput/>
+      <PlayAudio/>
     </div>
     </>
   );
