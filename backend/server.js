@@ -9,17 +9,14 @@ let fetch;   //dynamic import() statement to load 'node-fetch' as an ES module
 })();
 
 const app = express();
-app.use(cors());
-
 const voiceID = "M4AeDyeasyWLj4pHA0li";
-
 const port = process.env.PORT || 5000;
-
-app.use(express.json());
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+app.use(cors());
+app.use(express.json());
 
 app.post('/api/generate', async (req, res) => {
   try {
@@ -50,29 +47,16 @@ app.post('/api/text-to-speech', async (req, res) => {
     headers: {"Content-Type": "application/json",
               "xi-api-key": apiKey },
     body: JSON.stringify({
-      // model_id: "eleven_monolingual_v1",
       text: text,
-      // voice_settings: {
-      //   similarity_boost: 0.5,
-      //   stability: 0.5,
-      // }
       redirect: "follow"
     }),
-    // URLSearchParams: {
-    //   output_format: mp3_44100_128
-    // }
   };
-
-
 
   try {
     const response = await fetch(API_ENDPOINT, options);
-    console.log('gotted a response!', response)
-    // const data = await response.json();
-    // res.json({data});
+
     if (!response.ok) throw new Error(`Unexpected response ${response.statusText}`);
     response.body.pipe(res);
-
 
   } catch (err) {
     console.error(err);
