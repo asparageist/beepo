@@ -11,7 +11,7 @@ let fetch;   //dynamic import() statement to load 'node-fetch' as an ES module
 const app = express();
 app.use(cors());
 
-const voiceID = "560045d6fea2053471c18d5050e96c9e4bdd8ff379185fea0638c01b59e316be";
+const voiceID = "M4AeDyeasyWLj4pHA0li";
 
 const port = process.env.PORT || 5000;
 
@@ -31,7 +31,7 @@ app.post('/api/generate', async (req, res) => {
       ],
       model: 'gpt-3.5-turbo',
       max_tokens: 100, //length of the response
-      temperature: 0.5 //randomness of the response, 0 being completely deterministic and 1 being random
+      temperature: 0.0 //randomness of the response, 0 being completely deterministic and 1 being random (higher numbers seem to become more long-winded)
     });
     res.json({ response: response.choices[0].message.content });
   } catch (error) {
@@ -42,26 +42,38 @@ app.post('/api/generate', async (req, res) => {
 
 app.post('/api/text-to-speech', async (req, res) => {
   const {text} = req.body;
+  const apiKey = process.env.XI_API_KEY;
+  const API_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${voiceID}`;
 
   const options = {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    method: "POST",
+    headers: {"Content-Type": "application/json",
+              "xi-api-key": apiKey },
     body: JSON.stringify({
-      model_id: "eleven_monolingual_v1",
+      // model_id: "eleven_monolingual_v1",
       text: text,
-      voice_settings: {
-        similarity_boost: 123,
-        stability: 123,
-        style: 123,
-        use_speaker_boost: true
-      }
-    })
+      // voice_settings: {
+      //   similarity_boost: 0.5,
+      //   stability: 0.5,
+      // }
+      redirect: "follow"
+    }),
+    // URLSearchParams: {
+    //   output_format: mp3_44100_128
+    // }
   };
 
+
+
   try {
-    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceID}`, options);
-    const data = await response.json();
-    res.json({audio_url: data.audio_url});
+    const response = await fetch(API_ENDPOINT, options);
+    console.log('gotted a response!', response)
+    // const data = await response.json();
+    // res.json({data});
+    if (!response.ok) throw new Error(`Unexpected response ${response.statusText}`);
+    response.body.pipe(res);
+
+
   } catch (err) {
     console.error(err);
     res.status(500).json({error: 'Error generating speech.'});
