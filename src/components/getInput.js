@@ -3,7 +3,7 @@ import callChatGPT from './callGPT';
 import Dictaphone from './Dictaphone';
 
 
-function GetInput({ setResponse }) {
+function GetInput({ setResponse, setIsLoading }) {
   const [prompt, setPrompt] = useState('');
 
   const handleTranscriptChange = (transcript) => {
@@ -12,8 +12,10 @@ function GetInput({ setResponse }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const apiResponse = await callChatGPT(prompt);
     setResponse(apiResponse);
+    setIsLoading(false);
   };
   
   return (
