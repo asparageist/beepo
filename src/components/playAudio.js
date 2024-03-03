@@ -4,21 +4,36 @@ import generateSpeech from './generateSpeech';
 function PlayAudio({ response }) {
   const [text, setText] = useState('');
 
-  useEffect(() => {
-    setText(response);
-  }, [response]);
+    useEffect(() => {
+      if (response.trim()) {
+        generateSpeech(response);
+      }
+    }, [response]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    await generateSpeech(text);
-  };
+    return (
+      <div>
+        <textarea value={response} readOnly rows="10" cols="80" />
+      </div>
+      );
+    }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <textarea value={text} onChange={(e) => setText(e.target.value)} />
-      <button type ="submit">SPEAK</button>
-    </form>
-  );
-}
+
+    // manual input:
+  // useEffect(() => {
+  //   setText(response);
+  // }, [response]);
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   await generateSpeech(text);
+  // };
+
+  // return (
+  //   <form onSubmit={handleSubmit}>
+  //     <textarea value={text} onChange={(e) => setText(e.target.value)} rows="10" cols="80" />
+  //     <button type ="submit">SPEAK</button>
+  //   </form>
+  // );
+
 
 export default PlayAudio;
