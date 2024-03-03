@@ -6,10 +6,6 @@ import Dictaphone from './Dictaphone';
 function GetInput({ setResponse }) {
   const [prompt, setPrompt] = useState('');
 
-  // const handleChange = (event) => {
-  //   setPrompt(event.target.value);
-  // };
-
   const handleTranscriptChange = (transcript) => {
     setPrompt(transcript);
   }
@@ -25,13 +21,6 @@ function GetInput({ setResponse }) {
       <form onSubmit={handleSubmit}>
       <p>say what now</p>
       <Dictaphone onTranscriptChange={handleTranscriptChange} />
-        {/* <input 
-          type="text"
-          value={prompt}
-          onChange={handleChange}
-          placeholder="SAY WHAT NOW"
-          required />
-        <button type="submit">SAY THAT</button> */}
       </form>
     </div>
   );

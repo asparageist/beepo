@@ -17,23 +17,4 @@ function PlayAudio({ response }) {
       );
     }
 
-
-    // manual input:
-  // useEffect(() => {
-  //   setText(response);
-  // }, [response]);
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   await generateSpeech(text);
-  // };
-
-  // return (
-  //   <form onSubmit={handleSubmit}>
-  //     <textarea value={text} onChange={(e) => setText(e.target.value)} rows="10" cols="80" />
-  //     <button type ="submit">SPEAK</button>
-  //   </form>
-  // );
-
-
 export default PlayAudio;
