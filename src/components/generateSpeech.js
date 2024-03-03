@@ -15,7 +15,10 @@ const generateSpeech = async (text) => {
     const audioURL = URL.createObjectURL(blob);
 
     const audio = new Audio(audioURL);
-    audio.play();
+
+    setTimeout(() => {
+      audio.play();
+    }, 3000);
 
   } catch (err) {
     console.error(err);

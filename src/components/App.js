@@ -1,14 +1,12 @@
 import React from 'react';
 import './App.css';
-import PlayAudio from './playAudio';
-import GetInput from './getInput';
+import TransferText from './transferText';
 
 function App() {
   return (
     <>
     <div id='App-header'>
-      <GetInput/>
-      <PlayAudio/>
+      <TransferText/>
     </div>
     </>
   );

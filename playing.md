@@ -1,3 +1,5 @@
+How do you make a grilled cheese sandwich?
+
 tokens 200, temperature .9:
 To make a grilled cheese sandwich, you will need the following ingredients: - 2 slices of bread - Butter or margarine - Cheese (such as cheddar, American, or Swiss) Instructions: 1. Heat a non-stick skillet or griddle over medium heat. 2. Spread butter or margarine on one side of each slice of bread. 3. Place one slice of bread, butter-side down, on the skillet. 4. Add a layer of cheese on top of the bread in the skillet. 5. Place the second slice of bread, butter-side up, on top of the cheese. 6. Cook for 2-3 minutes, or until the bottom slice of bread is golden brown. 7. Carefully flip the sandwich over and cook for an additional 2-3 minutes, or until the second side is golden brown and the cheese is melted. 8. Remove the grilled cheese from the skillet and let it cool for a minute before cutting it in half and
 

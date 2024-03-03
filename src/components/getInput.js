@@ -3,9 +3,8 @@ import callChatGPT from './callGPT';
 import Dictaphone from './Dictaphone';
 
 
-function GetInput() {
+function GetInput({ setResponse }) {
   const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState('');
 
   const handleChange = (event) => {
     setPrompt(event.target.value);
@@ -34,7 +33,6 @@ function GetInput() {
           required />
         <button type="submit">SAY THAT</button>
       </form>
-      {response && <div className="response">{response}</div>}
     </div>
   );
   
