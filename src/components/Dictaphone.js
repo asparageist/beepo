@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-const Dictaphone = ({onTranscriptChange}) => {
+const Dictaphone = ({onTranscriptChange, isLoading}) => {
   const {
     transcript,
     listening,
@@ -30,6 +30,13 @@ const Dictaphone = ({onTranscriptChange}) => {
     return <span>Browser doesn't support speech recognition.</span>;
   }
 
+  let imageUrl = 'squirrelWaiting.jpg';
+  if (isPressed) {
+    imageUrl = 'squirrelListening.jpg';
+  } else if (isLoading) {
+    imageUrl = 'squirrelThinking.jpg';
+  }
+
   return (
     <div>
       <p>Microphone: {listening ? 'on' : 'off'}</p>
@@ -40,7 +47,7 @@ const Dictaphone = ({onTranscriptChange}) => {
         onMouseUp={handleButtonRelease}
       > 
       <img 
-        src={isPressed ? 'squirrelListening.jpg' : 'squirrelWaiting.jpg'}
+        src={imageUrl}
         style={{height: '100vh' }}
         alt='squirrel listening/waiting'/>
       </button>

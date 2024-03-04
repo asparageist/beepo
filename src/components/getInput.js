@@ -3,7 +3,7 @@ import callChatGPT from './callGPT';
 import Dictaphone from './Dictaphone';
 
 
-function GetInput({ setResponse, setIsLoading, parameters }) {
+function GetInput({ setResponse, setIsLoading, isLoading, parameters }) {
   const [prompt, setPrompt] = useState('');
 
   const handleTranscriptChange = (transcript) => {
@@ -23,7 +23,7 @@ function GetInput({ setResponse, setIsLoading, parameters }) {
     <div>
       <form onSubmit={handleSubmit}>
       <p>say what now</p>
-      <Dictaphone onTranscriptChange={handleTranscriptChange} />
+      <Dictaphone onTranscriptChange={handleTranscriptChange} isLoading={isLoading} />
       </form>
     </div>
   );
