@@ -5,7 +5,7 @@ import TransferText from './transferText';
 function App() {
   return (
     <>
-    <div id='App-header'>
+    <div>
       <TransferText/>
     </div>
     </>
