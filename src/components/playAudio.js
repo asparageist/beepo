@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import generateSpeech from './generateSpeech';
 
-function PlayAudio({ response, isLoading }) {
-  const [isAudioLoading, setIsAudioLoading] = useState(false);
+function PlayAudio({ response, isLoading, setIsLoading }) {
 
     useEffect(() => {
       if (response.trim()) {
-        setIsAudioLoading(true);
+        setIsLoading(true);
         generateSpeech(response);
         setTimeout(() => {
-          setIsAudioLoading(false);
+          setIsLoading(false);
         }, 4000);
       }
-    }, [response]);
+    }, [response, setIsLoading]);
 
     return (
       <div>
-        {(isLoading || isAudioLoading) ? (
+        {isLoading ? (
           <div>Loading...</div>
         ) : (
           <textarea value={response} readOnly rows="10" cols="80" />

@@ -12,7 +12,7 @@ function TransferText() {
     <div>
       <InputParameters setParameters={setParameters} />
       <GetInput setResponse={setResponse} setIsLoading={setIsLoading} isLoading={isLoading} parameters={parameters} />
-      <PlayAudio response={response} isLoading={isLoading} />
+      <PlayAudio response={response} isLoading={isLoading} setIsLoading={setIsLoading} />
     </div>
   );
 }
