@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import getImageUrl from './imageShuffle';
 
-const Dictaphone = ({onTranscriptChange, isLoading}) => {
+const Dictaphone = ({onTranscriptChange, imageState, setIsPressed}) => {
   const {
     transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
-
-  const [isPressed, setIsPressed] = useState(false);
 
   useEffect(() => {
     onTranscriptChange(transcript);
@@ -30,12 +29,7 @@ const Dictaphone = ({onTranscriptChange, isLoading}) => {
     return <span>Browser doesn't support speech recognition.</span>;
   }
 
-  let imageUrl = 'squirrelWaiting.jpg';
-  if (isPressed) {
-    imageUrl = 'squirrelListening.jpg';
-  } else if (isLoading) {
-    imageUrl = 'squirrelThinking.jpg';
-  }
+  const imageUrl = getImageUrl(imageState);
 
   return (
     <div>

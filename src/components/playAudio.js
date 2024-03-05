@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import generateSpeech from './generateSpeech';
 
-function PlayAudio({ response, isLoading, setIsLoading }) {
+function PlayAudio({ response, isLoading, setIsLoading, setImageState }) {
 
     useEffect(() => {
       if (response.trim()) {
         setIsLoading(true);
-        generateSpeech(response);
-        setTimeout(() => {
-          setIsLoading(false);
+        setImageState('thinking');
+        generateSpeech(response).then(() => {
+          setImageState('speaking');
+          setTimeout(() => {
+            setIsLoading(false);
+            setImageState('waiting');
         }, 4000);
+      });
       }
-    }, [response, setIsLoading]);
+    }, [response, setIsLoading, setImageState]);
 
     return (
       <div>

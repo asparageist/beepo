@@ -5,6 +5,9 @@ import Dictaphone from './Dictaphone';
 
 function GetInput({ setResponse, setIsLoading, isLoading, parameters }) {
   const [prompt, setPrompt] = useState('');
+  const [isPressed, setIsPressed] = useState(false);
+  const imageState = isLoading ? 'thinking' : (isPressed ? 'listening' : 'waiting');
+
 
   const handleTranscriptChange = (transcript) => {
     setPrompt(transcript);
@@ -13,7 +16,7 @@ function GetInput({ setResponse, setIsLoading, isLoading, parameters }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const formattedPrompt = `${prompt} ${parameters}`;
+    const formattedPrompt = `${parameters} ${prompt}`;
     const apiResponse = await callChatGPT(formattedPrompt);
     setResponse(apiResponse);
     setIsLoading(false);
@@ -23,7 +26,7 @@ function GetInput({ setResponse, setIsLoading, isLoading, parameters }) {
     <div>
       <form onSubmit={handleSubmit}>
       <p>say what now</p>
-      <Dictaphone onTranscriptChange={handleTranscriptChange} isLoading={isLoading} />
+      <Dictaphone onTranscriptChange={handleTranscriptChange} imageState={imageState} setIsPressed={setIsPressed} />
       </form>
     </div>
   );

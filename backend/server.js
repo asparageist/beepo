@@ -9,7 +9,7 @@ let fetch;   //dynamic import() statement to load 'node-fetch' as an ES module
 })();
 
 const app = express();
-const voiceID = "M4AeDyeasyWLj4pHA0li";
+const voiceID = "J6A4403Q6nnAePYWhrZz";  // just copy and paste from voice lab on elevenlabs website to change voices
 const port = process.env.PORT || 5000;
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
