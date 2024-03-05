@@ -6,12 +6,12 @@ function PlayAudio({ response, isLoading, setIsLoading, setImageState }) {
     useEffect(() => {
       if (response.trim()) {
         setIsLoading(true);
-        setImageState('thinking');
+        // setImageState('thinking');
         generateSpeech(response).then(() => {
-          setImageState('speaking');
+          // setImageState('speaking');
           setTimeout(() => {
             setIsLoading(false);
-            setImageState('waiting');
+            // setImageState('waiting');
         }, 4000);
       });
       }
@@ -22,7 +22,7 @@ function PlayAudio({ response, isLoading, setIsLoading, setImageState }) {
         {isLoading ? (
           <div>Loading...</div>
         ) : (
-          <textarea value={response} readOnly rows="10" cols="80" />
+          <p>{response}</p>
         )}  
         </div>
       );
