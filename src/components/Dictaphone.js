@@ -41,7 +41,7 @@ const Dictaphone = ({onTranscriptChange, imageState, setIsPressed}) => {
       > 
       <img 
         src={imageUrl}
-        style={{height: '100vh' }}
+        style={{height: '100vw' }}
         alt='squirrel listening/waiting'
         draggable='false' />
       </button>
