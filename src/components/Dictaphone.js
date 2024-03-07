@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import getImageUrl from './imageShuffle';
+import getImageUrl from './imageStates';
 
 const Dictaphone = ({onTranscriptChange, imageState, setIsPressed}) => {
   const {
@@ -33,7 +33,6 @@ const Dictaphone = ({onTranscriptChange, imageState, setIsPressed}) => {
 
   return (
     <div>
-      <p>Microphone: {listening ? 'on' : 'off'}</p>
       <button
         onTouchStart={handleButtonPress}
         onMouseDown={handleButtonPress}
@@ -46,8 +45,6 @@ const Dictaphone = ({onTranscriptChange, imageState, setIsPressed}) => {
         alt='squirrel listening/waiting'
         draggable='false' />
       </button>
-      <br />
-      <p>{transcript}</p>
     </div>
   );
 };

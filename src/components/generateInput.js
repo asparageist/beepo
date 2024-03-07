@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import callChatGPT from './callGPT';
+import callChatGPT from './api/callGPT';
 import Dictaphone from './Dictaphone';
+import InputParameters from './inputParameters';
 
 
-function GetInput({ setResponse, setIsLoading, isLoading, parameters }) {
+function GenerateInput({ setResponse, setIsLoading, isLoading }) {
   const [prompt, setPrompt] = useState('');
   const [isPressed, setIsPressed] = useState(false);
+  const [parameters, setParameters] = useState({});
   const imageState = isLoading ? 'thinking' : (isPressed ? 'listening' : 'waiting');
 
 
@@ -24,13 +26,13 @@ function GetInput({ setResponse, setIsLoading, isLoading, parameters }) {
   
   return (
     <div>
+      <InputParameters setParameters={setParameters} />
       <form onSubmit={handleSubmit}>
-      <p>say what now</p>
-      <Dictaphone onTranscriptChange={handleTranscriptChange} imageState={imageState} setIsPressed={setIsPressed} />
+        <Dictaphone onTranscriptChange={handleTranscriptChange} imageState={imageState} setIsPressed={setIsPressed} />
       </form>
     </div>
   );
   
 }
 
-export default GetInput;
+export default GenerateInput;

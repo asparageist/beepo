@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import TransferText from './transferText';
+import AppContainer from './appContainer';
 
 function App() {
   return (
     <>
     <div>
-      <TransferText/>
+      <AppContainer/>
     </div>
     </>
   );

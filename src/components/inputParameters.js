@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 function InputParameters({ setParameters }) {
   const [personality, setPersonality] = useState('a magic squirrel named Beepo.');
-  const [restrictions, setRestrictions] = useState('Be whimsical but brief in your response. Treat me as though I am a 4 year old named Cooper.');
+  const [restrictions, setRestrictions] = useState('Be whimsical but brief in your response.');
   const [formattedParameters, setFormattedParameters] = useState('');
 
   useEffect(() => {
@@ -16,11 +16,11 @@ function InputParameters({ setParameters }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form class="hidden" onSubmit={handleSubmit}>
       <label>
         Personality: 
         <br />
-        <input 
+        <input class="hidden"
           type="text"
           value={personality}
           onChange={(e) => setPersonality(e.target.value)}
@@ -32,7 +32,7 @@ function InputParameters({ setParameters }) {
       <br />
         Restrictions: 
         <br />
-        <input 
+        <input class="hidden"
           type="text"
           value={restrictions}
           onChange={(e) => setRestrictions(e.target.value)}

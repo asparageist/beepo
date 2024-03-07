@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import generateSpeech from './generateSpeech';
+import generateSpeech from './api/callElevenLabs';
 
-function PlayAudio({ response, isLoading, setIsLoading, setImageState }) {
+function GenerateOutput({ response, isLoading, setIsLoading, setImageState }) {
 
     useEffect(() => {
       if (response.trim()) {
@@ -17,15 +17,6 @@ function PlayAudio({ response, isLoading, setIsLoading, setImageState }) {
       }
     }, [response, setIsLoading, setImageState]);
 
-    return (
-      <div>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <p>{response}</p>
-        )}  
-        </div>
-      );
-    }
+  }
 
-export default PlayAudio;
+export default GenerateOutput;
