@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import generateSpeech from './api/callElevenLabs';
 
 function GenerateOutput({ response, isLoading, setIsLoading, setImageState }) {

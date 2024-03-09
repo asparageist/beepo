@@ -16,11 +16,11 @@ function InputParameters({ setParameters }) {
   };
 
   return (
-    <form class="hidden" onSubmit={handleSubmit}>
+    <form className="hidden" onSubmit={handleSubmit}>
       <label>
         Personality: 
         <br />
-        <input class="hidden"
+        <input className="hidden"
           type="text"
           value={personality}
           onChange={(e) => setPersonality(e.target.value)}
@@ -32,7 +32,7 @@ function InputParameters({ setParameters }) {
       <br />
         Restrictions: 
         <br />
-        <input class="hidden"
+        <input className="hidden"
           type="text"
           value={restrictions}
           onChange={(e) => setRestrictions(e.target.value)}
