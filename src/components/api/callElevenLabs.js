@@ -10,7 +10,7 @@ const generateSpeech = async (text) => {
     const response = await fetch('/api/text-to-speech', options);
     if (!response.ok) throw new Error(`Unexpected response ${response.statusText}`);
 
-    const blob = await response.blob();
+    const blob = await response.blob(); //binary langage object, for handling streaming multimedia
 
     const audioURL = URL.createObjectURL(blob);
 

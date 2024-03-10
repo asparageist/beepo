@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+#Beepo the Magic Squirrel
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This app serves as a portable companion that children can interact with by asking questions.
+
+## Setup/Installation Requirements
+
+1. Clone this repo from _https://github.com/asparageist/beepo_.
+2. Open your shell (e.g., Terminal or GitBash) and navigate to this project's directory, called "squirreltron".
+3. Install dependencies: `$ npm install`.
+4. Navigate to the directory squirreltron/backend.
+5. Create a .env file containing 2 keys, `OPEN_AI_KEY=` and `XI_API_KEY=` with keys retrieved from _https://platform.openai.com/_ and _https://elevenlabs.io/app/voice-lab_ respectively.
+6. Run `$ node server.js` to start the backend at: _http://localhost:5000_.
+7. Navigate back to squirreltron/ and run `$ npm run start` to start the project at: _https://localhost:3000_.
 
 ## Available Scripts
 
@@ -45,26 +55,16 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## Licensing Info
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+*Copyright (c) 02/12/2024 Joseph Murray
+*MIT license below
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.

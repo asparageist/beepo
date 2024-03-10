@@ -9,9 +9,8 @@ function AppContainer() {
   
   return (
     <div>
-      <h1>TEST TEST</h1>
       <GenerateInput setResponse={setResponse} setIsLoading={setIsLoading} isLoading={isLoading} />
-      <GenerateOutput response={response} isLoading={isLoading} setIsLoading={setIsLoading} setImageState={setImageState} />
+      <GenerateOutput response={response} setIsLoading={setIsLoading} setImageState={setImageState} />
     </div>
   );
 }

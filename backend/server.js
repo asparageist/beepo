@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require('express');  //Node framework for server-side apps
 const { OpenAI } = require('openai');
-const cors = require('cors');
+const cors = require('cors'); //Cross Origin Resource Sharing
 require('dotenv').config();
 
-let fetch;   //dynamic import() statement to load 'node-fetch' as an ES module
+let fetch;   //dynamic import() statement to load asynchronous requests
 (async () => {
   fetch = (await import('node-fetch')).default;
 })();
