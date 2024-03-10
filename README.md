@@ -1,4 +1,4 @@
-#Beepo the Magic Squirrel
+# Beepo the Magic Squirrel
 
 This app serves as a portable companion that children can interact with by asking questions.
 
