@@ -9,7 +9,7 @@ let fetch;   //dynamic import() statement to load asynchronous requests
 })();
 
 const app = express();
-const voiceID = "J6A4403Q6nnAePYWhrZz";  // just copy and paste from voice lab on elevenlabs website to change voices
+const voiceID = "wDJ3bUPmyY8h3FIcZStV";  // just copy and paste from voice lab on elevenlabs website to change voices
 const port = process.env.PORT || 5000;
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -21,7 +21,6 @@ app.use(express.json());
 app.post('/api/generate', async (req, res) => {
   try {
     const { prompt } = req.body;
-
     const response = await openai.chat.completions.create({
       messages: [
         { role: 'user', content: prompt},
@@ -34,8 +33,31 @@ app.post('/api/generate', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while generating your text' });
+
+    const API_ENDPOINT = `https://discord.com/api/webhooks/1225285846643511338/98b5fIjAqOorQ3_s5M1Selhet1kx5NyPyUq5YWAkYhw-nemdqqu_leHUPE6w80dAezAJ`;
+
+    const options = {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        content: prompt
+      }),
+    }
+      try {
+        const response = await fetch(API_ENDPOINT, options);
+    
+        if (!response.ok) throw new Error(`Unexpected response ${response.statusText}`);
+        response.body.pipe(res);
+    
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({error: 'Error calling webhook.'});
+      }
+  
   }
+
 });
+
 
 app.post('/api/text-to-speech', async (req, res) => {
   const {text} = req.body;
@@ -57,6 +79,8 @@ app.post('/api/text-to-speech', async (req, res) => {
 
     if (!response.ok) throw new Error(`Unexpected response ${response.statusText}`);
     response.body.pipe(res);
+    return res.status(200);
+
 
   } catch (err) {
     console.error(err);

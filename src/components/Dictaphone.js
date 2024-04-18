@@ -5,7 +5,6 @@ import getImageUrl from './imageStates';
 const Dictaphone = ({onTranscriptChange, imageState, setIsPressed}) => {
   const {
     transcript,
-    listening,
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();

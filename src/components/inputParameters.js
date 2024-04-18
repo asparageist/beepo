@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 function InputParameters({ setParameters }) {
-  const [personality, setPersonality] = useState('a magic squirrel named Beepo.');
+  const [personality, setPersonality] = useState('a resentful wizard advisor.');
   const [restrictions, setRestrictions] = useState('Be whimsical but brief in your response.');
   const [formattedParameters, setFormattedParameters] = useState('');
 
