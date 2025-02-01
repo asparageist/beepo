@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useApp } from '../context/AppContext';
 
-function InputParameters({ setParameters }) {
-  const [personality, setPersonality] = useState('a resentful wizard advisor.');
-  const [restrictions, setRestrictions] = useState('Be whimsical but brief in your response.');
-  const [formattedParameters, setFormattedParameters] = useState('');
+function InputParameters() {
+  const { 
+    personality, 
+    setPersonality, 
+    restrictions, 
+    setRestrictions 
+  } = useApp();
 
-  useEffect(() => {
-    const newFormattedParameters = `You are ${personality} ${restrictions}`;
-    setFormattedParameters(newFormattedParameters);
-    setParameters(newFormattedParameters);
-  }, [personality, restrictions, setParameters]);
-  
   const handleSubmit = (event) => {
     event.preventDefault();
   };
@@ -29,7 +27,7 @@ function InputParameters({ setParameters }) {
       </label>
       <br />
       <label>
-      <br />
+        <br />
         Restrictions: 
         <br />
         <input className="hidden"
@@ -40,7 +38,7 @@ function InputParameters({ setParameters }) {
         />
       </label>
       <br />
-      <p>{formattedParameters}</p>
+      <p>You are {personality} {restrictions}</p>
     </form>
   );
 }

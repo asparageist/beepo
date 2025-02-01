@@ -1,14 +1,13 @@
-const getImageUrl = (imageState) => {
-  switch (imageState) {
-    case 'listening':
-      return 'squirrelListening.jpg';
-    case 'thinking':
-      return 'squirrelThinking.jpg';
-    case 'speaking':
-      return 'squirrelSpeaking.jpg';
-    case 'waiting':
-      return 'squirrelWaiting.jpg';
-  }
+const getImageUrl = (state) => {
+  const images = {
+    waiting: '/wizWait.png',
+    listening: '/wizListen.png',
+    thinking: '/wizThink.png',
+    speaking: '/wizSpeak.png',
+    error: '/wizDead.png'
+  };
+
+  return images[state] || images.waiting;
 };
 
 export default getImageUrl;
