@@ -11,7 +11,7 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Build the app
+# Build the React app
 RUN npm run build
 
 # Expose the port

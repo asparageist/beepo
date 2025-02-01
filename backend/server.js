@@ -7,10 +7,14 @@ console.log('Looking for .env at:', envPath);
 
 require('dotenv').config({ path: envPath });
 
-// Debug logs
+// Print all environment variables (be careful not to commit this!)
+console.log('All environment variables:', process.env);
+
+// Print specific checks
 console.log('Current directory:', __dirname);
 console.log('Parent directory:', path.resolve(__dirname, '..'));
 console.log('OpenAI Key:', process.env.OPENAI_API_KEY ? 'exists' : 'missing');
+console.log('XI Key:', process.env.XI_API_KEY ? 'exists' : 'missing');
 
 let fetch;   
 (async () => {
