@@ -28,7 +28,7 @@ export function AppProvider({ children }) {
   useEffect(() => {
     setPersonality(personality);
     setRestrictions(restrictions);
-  }, []);
+  }, [personality, restrictions]);
   
   const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
