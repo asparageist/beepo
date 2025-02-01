@@ -48,107 +48,66 @@ console.log('ElevenLabs Key exists:', !!process.env.XI_API_KEY);
 
 app.post('/api/generate', async (req, res) => {
   try {
-    const { messages } = req.body;
+    const { prompt, conversationHistory } = req.body;
     
-    // Validate messages array
-    if (!Array.isArray(messages) || messages.length === 0) {
-      throw new Error('Invalid messages array');
-    }
-
-    // Validate each message object
-    messages.forEach(msg => {
-      if (!msg.role || !msg.content || typeof msg.content !== 'string') {
-        throw new Error('Invalid message format');
-      }
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        ...conversationHistory.map(entry => ({
+          role: "user",
+          content: entry.userMessage
+        })),
+        { role: "user", content: prompt }
+      ],
     });
 
-    console.log('Received messages:', JSON.stringify(messages, null, 2)); // Debug log
-
-    const response = await openai.chat.completions.create({
-      messages: messages,
-      model: 'gpt-3.5-turbo',
-      max_tokens: 100,
-      temperature: 0.0
-    });
-
-    if (!response.choices || !response.choices[0] || !response.choices[0].message) {
-      throw new Error('Invalid response from OpenAI');
-    }
-
-    res.json({ response: response.choices[0].message.content });
+    res.json({ message: completion.choices[0].message.content });
   } catch (error) {
-    console.error('OpenAI API Error:', error);
-    res.status(500).json({ 
-      error: 'Failed to generate response',
-      details: error.message 
-    });
+    console.error('OpenAI API error:', error);
+    res.status(500).json({ error: 'Failed to generate response' });
   }
 });
 
-
 app.post('/api/text-to-speech', async (req, res) => {
-  const { text } = req.body;
-  const apiKey = process.env.XI_API_KEY;
-  const voiceID = "BSyOmE6yepUq21Rhxh4S";  // your voice ID here
-  const API_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${voiceID}`;
-
-  if (!apiKey) {
-    console.error('XI_API_KEY is not set in environment variables');
-    return res.status(500).json({ error: 'ElevenLabs API key is not configured' });
-  }
-
-  if (!text) {
-    console.error('No text provided in request body');
-    return res.status(400).json({ error: 'No text provided' });
-  }
-
-  console.log('Attempting text-to-speech conversion:', { text, voiceID });
-
-  const options = {
-    method: 'POST',
-    headers: {
-      'Accept': 'audio/mpeg',
-      'Content-Type': 'application/json',
-      'xi-api-key': apiKey
-    },
-    body: JSON.stringify({
-      text: text,
-      model_id: 'eleven_monolingual_v1',
-      voice_settings: {
-        stability: 0.5,
-        similarity_boost: 0.5
-      }
-    })
-  };
-
   try {
-    console.log('Sending request to ElevenLabs...');
-    const response = await fetch(API_ENDPOINT, options);
-    
+    const { text } = req.body;
+    if (!text) {
+      return res.status(400).json({ error: 'No text provided' });
+    }
+
+    const voiceID = "wDJ3bUPmyY8h3FIcZStV";  // Your voice ID
+    const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceID}`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'audio/mpeg',
+        'Content-Type': 'application/json',
+        'xi-api-key': process.env.XI_API_KEY
+      },
+      body: JSON.stringify({
+        text: text,
+        model_id: "eleven_monolingual_v1",
+        voice_settings: {
+          stability: 0.5,
+          similarity_boost: 0.5
+        }
+      })
+    });
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error('ElevenLabs API error:', response.status, errorText);
-      return res.status(response.status).json({ 
-        error: 'Error from ElevenLabs API',
-        details: errorText
-      });
+      return res.status(response.status).send(errorText);
     }
 
-    console.log('Received successful response from ElevenLabs');
-    console.log('Response headers:', response.headers);
-    
-    // Set appropriate headers for audio response
-    res.setHeader('Content-Type', 'audio/mpeg');
-    res.setHeader('Accept-Ranges', 'bytes');
+    const audioBuffer = await response.arrayBuffer();
+    res.set('Content-Type', 'audio/mpeg');
+    res.send(Buffer.from(audioBuffer));
 
-    response.body.pipe(res);
-
-  } catch (err) {
-    console.error('Error in text-to-speech endpoint:', err);
-    res.status(500).json({ 
-      error: 'Error generating speech',
-      details: err.message
-    });
+  } catch (error) {
+    console.error('Text-to-speech error:', error);
+    res.status(500).json({ error: 'Failed to generate speech' });
   }
 });
 
