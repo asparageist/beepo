@@ -2,7 +2,15 @@ const express = require('express');
 const { OpenAI } = require('openai');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();
+const envPath = path.resolve(__dirname, '../.env');  // This will now look one level up from backend
+console.log('Looking for .env at:', envPath);
+
+require('dotenv').config({ path: envPath });
+
+// Debug logs
+console.log('Current directory:', __dirname);
+console.log('Parent directory:', path.resolve(__dirname, '..'));
+console.log('OpenAI Key:', process.env.OPENAI_API_KEY ? 'exists' : 'missing');
 
 let fetch;   
 (async () => {
@@ -33,6 +41,10 @@ app.use(express.json());
 
 // Serve static files from the React build directory
 app.use(express.static(path.join(__dirname, '../build')));
+
+// Add this line for debugging
+console.log('OpenAI Key exists:', !!process.env.OPENAI_API_KEY);
+console.log('ElevenLabs Key exists:', !!process.env.XI_API_KEY);
 
 app.post('/api/generate', async (req, res) => {
   try {
