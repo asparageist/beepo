@@ -1,6 +1,7 @@
 const express = require('express');  
 const { OpenAI } = require('openai');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 let fetch;   
@@ -9,14 +10,23 @@ let fetch;
 })();
 
 const app = express();
-const voiceID = "BSyOmE6yepUq21Rhxh4S";  // just copy and paste from voice lab on elevenlabs website to change voices
-const port = process.env.PORT || 5000;
+const voiceID = "wDJ3bUPmyY8h3FIcZStV";  // just copy and paste from voice lab on elevenlabs website to change voices
+const port = process.env.PORT || 3000;
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-app.use(cors());
+// Update CORS configuration
+app.use(cors({
+  origin: ['https://beepo-production.up.railway.app', 'http://localhost:3000'],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+
 app.use(express.json());
+
+// Serve static files from the React build directory
+app.use(express.static(path.join(__dirname, '../build')));
 
 app.post('/api/generate', async (req, res) => {
   try {
@@ -150,6 +160,11 @@ app.get('/api/test-elevenlabs', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
+
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running on port ${port}`);
 });
