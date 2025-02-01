@@ -16,12 +16,18 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Update CORS configuration
-app.use(cors({
-  origin: ['https://beepo-production.up.railway.app', 'http://localhost:3000'],
-  methods: ['GET', 'POST'],
-  credentials: true
-}));
+// Trust the Railway proxy
+app.set('trust proxy', true);
+
+// Update CORS configuration with exact domain
+app.use(cors());
+
+// Add headers middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://beepo-production.up.railway.app');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 app.use(express.json());
 
@@ -165,6 +171,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
-app.listen(port, '0.0.0.0', () => {
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
