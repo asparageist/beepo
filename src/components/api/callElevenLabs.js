@@ -6,19 +6,27 @@ const generateSpeech = async (text) => {
 
   console.log('Attempting to generate speech for:', text);
 
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ text })
+  };
+
   try {
-    const response = await fetch('/api/text-to-speech', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ text })
-    });
+    console.log('Sending request to text-to-speech endpoint...');
+    const response = await fetch('/api/text-to-speech', options);
     
     if (!response.ok) {
-      throw new Error(`Unexpected response ${response.status}`);
+      const errorText = await response.text();
+      console.error('Text-to-speech response error:', response.status, errorText);
+      throw new Error(`Unexpected response ${response.status}: ${errorText}`);
     }
 
+    console.log('Response headers:', [...response.headers.entries()]);
+    console.log('Response type:', response.type);
+    
     const blob = await response.blob();
     console.log('Blob created:', {
       type: blob.type,
@@ -35,6 +43,7 @@ const generateSpeech = async (text) => {
 
     const audio = new Audio();
     
+    // Add event listeners before setting the source
     audio.addEventListener('loadeddata', () => {
       console.log('Audio data loaded successfully');
     });
@@ -56,10 +65,11 @@ const generateSpeech = async (text) => {
       URL.revokeObjectURL(audioURL);
     });
 
+    // Set the audio source
     audio.src = audioURL;
     console.log('Audio source set');
 
-    return audio;
+    return audio;  // Return the audio element
 
   } catch (err) {
     console.error('Error in generateSpeech:', err);

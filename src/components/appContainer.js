@@ -5,7 +5,7 @@ import GenerateOutput from './generateOutput';
 function AppContainer() {
   const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [setImageState] = useState('waiting');
+  const [imageState, setImageState] = useState('waiting');
   
   return (
     <div>

@@ -1,20 +1,7 @@
 const express = require('express');  
 const { OpenAI } = require('openai');
 const cors = require('cors');
-const path = require('path');
-const envPath = path.resolve(__dirname, '../.env');  // This will now look one level up from backend
-console.log('Looking for .env at:', envPath);
-
-require('dotenv').config({ path: envPath });
-
-// Print all environment variables (be careful not to commit this!)
-console.log('All environment variables:', process.env);
-
-// Print specific checks
-console.log('Current directory:', __dirname);
-console.log('Parent directory:', path.resolve(__dirname, '..'));
-console.log('OpenAI Key:', process.env.OPENAI_API_KEY ? 'exists' : 'missing');
-console.log('XI Key:', process.env.XI_API_KEY ? 'exists' : 'missing');
+require('dotenv').config();
 
 let fetch;   
 (async () => {
@@ -22,96 +9,118 @@ let fetch;
 })();
 
 const app = express();
-const voiceID = "wDJ3bUPmyY8h3FIcZStV";  // just copy and paste from voice lab on elevenlabs website to change voices
-const port = process.env.PORT || 3000;
+const voiceID = "BSyOmE6yepUq21Rhxh4S";  // just copy and paste from voice lab on elevenlabs website to change voices
+const port = process.env.PORT || 5000;
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Trust the Railway proxy
-app.set('trust proxy', true);
-
-// Update CORS configuration with exact domain
 app.use(cors());
-
-// Add headers middleware
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://beepo-production.up.railway.app');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-
 app.use(express.json());
-
-// Serve static files from the React build directory
-app.use(express.static(path.join(__dirname, '../build')));
-
-// Add this line for debugging
-console.log('OpenAI Key exists:', !!process.env.OPENAI_API_KEY);
-console.log('ElevenLabs Key exists:', !!process.env.XI_API_KEY);
 
 app.post('/api/generate', async (req, res) => {
   try {
-    const { prompt, conversationHistory } = req.body;
+    const { messages } = req.body;
     
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        ...conversationHistory.map(entry => ({
-          role: "user",
-          content: entry.userMessage
-        })),
-        { role: "user", content: prompt }
-      ],
+    // Validate messages array
+    if (!Array.isArray(messages) || messages.length === 0) {
+      throw new Error('Invalid messages array');
+    }
+
+    // Validate each message object
+    messages.forEach(msg => {
+      if (!msg.role || !msg.content || typeof msg.content !== 'string') {
+        throw new Error('Invalid message format');
+      }
     });
 
-    res.json({ message: completion.choices[0].message.content });
+    console.log('Received messages:', JSON.stringify(messages, null, 2)); // Debug log
+
+    const response = await openai.chat.completions.create({
+      messages: messages,
+      model: 'gpt-3.5-turbo',
+      max_tokens: 100,
+      temperature: 0.0
+    });
+
+    if (!response.choices || !response.choices[0] || !response.choices[0].message) {
+      throw new Error('Invalid response from OpenAI');
+    }
+
+    res.json({ response: response.choices[0].message.content });
   } catch (error) {
-    console.error('OpenAI API error:', error);
-    res.status(500).json({ error: 'Failed to generate response' });
+    console.error('OpenAI API Error:', error);
+    res.status(500).json({ 
+      error: 'Failed to generate response',
+      details: error.message 
+    });
   }
 });
 
+
 app.post('/api/text-to-speech', async (req, res) => {
+  const { text } = req.body;
+  const apiKey = process.env.XI_API_KEY;
+  const voiceID = "BSyOmE6yepUq21Rhxh4S";  // your voice ID here
+  const API_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${voiceID}`;
+
+  if (!apiKey) {
+    console.error('XI_API_KEY is not set in environment variables');
+    return res.status(500).json({ error: 'ElevenLabs API key is not configured' });
+  }
+
+  if (!text) {
+    console.error('No text provided in request body');
+    return res.status(400).json({ error: 'No text provided' });
+  }
+
+  console.log('Attempting text-to-speech conversion:', { text, voiceID });
+
+  const options = {
+    method: 'POST',
+    headers: {
+      'Accept': 'audio/mpeg',
+      'Content-Type': 'application/json',
+      'xi-api-key': apiKey
+    },
+    body: JSON.stringify({
+      text: text,
+      model_id: 'eleven_monolingual_v1',
+      voice_settings: {
+        stability: 0.5,
+        similarity_boost: 0.5
+      }
+    })
+  };
+
   try {
-    const { text } = req.body;
-    if (!text) {
-      return res.status(400).json({ error: 'No text provided' });
-    }
-
-    const voiceID = "wDJ3bUPmyY8h3FIcZStV";  // Your voice ID
-    const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceID}`;
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'audio/mpeg',
-        'Content-Type': 'application/json',
-        'xi-api-key': process.env.XI_API_KEY
-      },
-      body: JSON.stringify({
-        text: text,
-        model_id: "eleven_monolingual_v1",
-        voice_settings: {
-          stability: 0.5,
-          similarity_boost: 0.5
-        }
-      })
-    });
-
+    console.log('Sending request to ElevenLabs...');
+    const response = await fetch(API_ENDPOINT, options);
+    
     if (!response.ok) {
       const errorText = await response.text();
       console.error('ElevenLabs API error:', response.status, errorText);
-      return res.status(response.status).send(errorText);
+      return res.status(response.status).json({ 
+        error: 'Error from ElevenLabs API',
+        details: errorText
+      });
     }
 
-    const audioBuffer = await response.arrayBuffer();
-    res.set('Content-Type', 'audio/mpeg');
-    res.send(Buffer.from(audioBuffer));
+    console.log('Received successful response from ElevenLabs');
+    console.log('Response headers:', response.headers);
+    
+    // Set appropriate headers for audio response
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.setHeader('Accept-Ranges', 'bytes');
 
-  } catch (error) {
-    console.error('Text-to-speech error:', error);
-    res.status(500).json({ error: 'Failed to generate speech' });
+    response.body.pipe(res);
+
+  } catch (err) {
+    console.error('Error in text-to-speech endpoint:', err);
+    res.status(500).json({ 
+      error: 'Error generating speech',
+      details: err.message
+    });
   }
 });
 
@@ -139,11 +148,6 @@ app.get('/api/test-elevenlabs', async (req, res) => {
     console.error('ElevenLabs test failed:', error);
     res.status(500).json({ error: error.message });
   }
-});
-
-// Handle React routing, return all requests to React app
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build', 'index.html'));
 });
 
 app.listen(port, () => {
